@@ -4,6 +4,7 @@ echo "*******************************************"
 echo "          Installing Requirements          "
 echo "*******************************************"
 
+python3 -m pip install --upgrade pip
 pip3 install -r ./requirements.txt
 script_full_path="$(pwd)/main.py"
 chmod 775 $script_full_path
