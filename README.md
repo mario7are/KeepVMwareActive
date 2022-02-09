@@ -2,7 +2,7 @@
 
 To be added
 
-# KeepWindowsaAlive
+# KeepWindowsAlive
 
 ## Installation
 
