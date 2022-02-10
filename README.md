@@ -4,6 +4,8 @@ To be added
 
 # KeepWindowsAlive
 
+Prevents windows to lock the screen by launching an event in the keyboard. It has been tested in a virtual machine hosted by vmware.
+
 ## Installation
 
 Install the python dependencies
