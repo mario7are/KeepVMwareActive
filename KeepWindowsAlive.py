@@ -14,11 +14,12 @@ class KeepWindowsAlive:
     keyboard = Controller()
     start_timestamp = time.time()
     FIXED_DURATION = True
+    DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
     def __init__(self, fixed_duration, wait_duration, poke_interval):
         self.WAIT_DURATION = int(wait_duration) if wait_duration and int(wait_duration) > 0 else self.WAIT_DURATION
         self.POKE_INTERVAL = int(poke_interval) if poke_interval and int(poke_interval) > 0 else self.POKE_INTERVAL
-        self.FIXED_DURATION = bool(fixed_duration) if fixed_duration and not bool(fixed_duration) else self.POKE_INTERVAL
+        self.FIXED_DURATION = False if fixed_duration and not bool(int(fixed_duration)) else True
         self.check() 
 
     
@@ -28,12 +29,12 @@ class KeepWindowsAlive:
         print(" WAIT_DURATION: {} ".format(self.WAIT_DURATION))
         print(" POKE_INTERVAL: {} ".format(self.POKE_INTERVAL))
         print(" FIXED_DURATION: {} ".format(self.FIXED_DURATION))
-        print(" end_time: {} ".format(datetime.utcfromtimestamp(end_time).strftime('%Y-%m-%d %H:%M:%S')))
-        print(" start_timestamp: {} ".format(datetime.utcfromtimestamp(self.start_timestamp).strftime('%Y-%m-%d %H:%M:%S')))
+        print(" start_timestamp: {} ".format(datetime.utcfromtimestamp(self.start_timestamp).strftime(self.DATE_FORMAT)))
+        print(" end_time: {} ".format(datetime.utcfromtimestamp(end_time).strftime(self.DATE_FORMAT)))
         # print(datetime.utcfromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S'))
         while(keep_going):
             time_now = time.time()
-            print(" time_now: {} ".format(time_now))
+            print(" time_now: {} ".format(datetime.utcfromtimestamp(time_now).strftime(self.DATE_FORMAT)))
             keep_going = self.POKE_INTERVAL + self.start_timestamp >= time_now
             keep_going = end_time >= time_now
             self.do_something()
@@ -46,7 +47,8 @@ class KeepWindowsAlive:
         self.keyboard.release(Key.right)
         self.keyboard.press(Key.left)
         self.keyboard.release(Key.right)
-        self.addMouseListener()
+        if not self.FIXED_DURATION:
+            self.addMouseListener()
 
     def on_move(self, x, y):
         print('Pointer moved to {0}'.format(
@@ -83,7 +85,7 @@ class KeepWindowsAlive:
         """Updates the starttime so that the timer used to stop preventing the screen lock is reset"""
         if not self.FIXED_DURATION:
             self.start_timestamp = time.time()
-            print(" start_timestamp: {} ".format(datetime.utcfromtimestamp(self.start_timestamp).strftime('%Y-%m-%d %H:%M:%S')))
+            print(" start_timestamp: {} ".format(datetime.utcfromtimestamp(self.start_timestamp).strftime(self.DATE_FORMAT)))
 
 
 print("Argument List: {}".format(sys.argv))
